@@ -12,7 +12,17 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false},
+        "bundleIdentifier": "com.example.demoApp",
+        "buildNumber": "1.0.0",
+        "infoPlist": {
+          "NSCameraUsageDescription": "This app needs access to the camera to scan QR codes",
+          "NSFaceIDUsageDescription": "This app needs access to Face ID to sign in",
+          "NSPhotoLibraryAddUsageDescription": "This app needs access to the photo library to save QR codes",
+          "NSPhotoLibraryUsageDescription": "This app needs access to the photo library to scan QR codes"
+        }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,6 +32,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
