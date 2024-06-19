@@ -4,10 +4,12 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthProvider, useAuth } from './app/context/AuthContext';
-
+import {config} from 'dotenv';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
+
+
 
 const Stack = createStackNavigator();
 

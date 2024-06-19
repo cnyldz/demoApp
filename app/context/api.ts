@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { API_URL } from './AuthContext';
+import Constants from 'expo-constants';
+
+// Access the API_URL from the environment variables
+const { API_URL } = Constants.expoConfig.extra;
 
 export interface Post {
   id: number;

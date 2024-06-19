@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import Constants from 'expo-constants';
+
+const API_URL = Constants.expoConfig.extra.API_URL;
+const TOKEN_KEY = Constants.expoConfig.extra.TOKEN_KEY;
 
 interface AuthState {
   token: string | null;
@@ -14,8 +18,6 @@ interface AuthProps {
   onLogout: () => Promise<void>;
 }
 
-const TOKEN_KEY = 'demoAppToken';
-export const API_URL = 'https://dummyjson.com';
 const AuthContext = createContext<AuthProps | undefined>(undefined);
 
 export const useAuth = (): AuthProps => {
@@ -66,11 +68,11 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
   const login = async (username: string, password: string) => {
     try {
-      console.log('Attempting login with:', { username, password }); 
+      console.log('Attempting login with:', { username, password });
       const response = await axios.post(`${API_URL}/auth/login`, {
         username,
         password,
-        expiresInMins: 60, 
+        expiresInMins: 60,
       }, {
         headers: { 'Content-Type': 'application/json' }
       });
@@ -89,7 +91,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         throw new Error('Token is missing in the response');
       }
     } catch (error: any) {
-      console.error('Login error:', error.response?.data || error.message); 
+      console.error('Login error:', error.response?.data || error.message);
       return { error: true, msg: error.response?.data?.message || 'Login failed' };
     }
   };
