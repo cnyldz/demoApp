@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image, Alert } from 'react-native';
 import { TextInput, Button, Text, ActivityIndicator, useTheme, Title } from 'react-native-paper';
 import { useAuth } from '../app/context/AuthContext';
-import LoginForm from '../app/context/LoginForm';
+import { useForm, Controller, FieldValues } from 'react-hook-form';
 
 const randomImageURI = 'https://picsum.photos/id/532/3820/2762';
 
+interface LoginFormInputs {
+  username: string;
+  password: string;
+}
+
 const Login = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
+  const [loading, setLoading] = React.useState(false);
   const { onLogin } = useAuth();
   const theme = useTheme();
 
-  const login = async () => {
-    if (username.trim() === '' || password.trim() === '') {
-      Alert.alert('Validation Error', 'Username and Password cannot be empty.');
-      return;
-    }
+  const onSubmit = async (data: LoginFormInputs) => {
+    const { username, password } = data;
     setLoading(true);
     const result = await onLogin(username, password);
     setLoading(false);
@@ -33,26 +34,48 @@ const Login = ({ navigation }) => {
       <Image source={{ uri: randomImageURI }} style={styles.image} />
       <Title style={styles.title}>Login</Title>
       <View style={styles.form}>
-        <TextInput
-          mode="outlined"
-          label="Username"
-          value={username}
-          onChangeText={setUsername}
-          autoCapitalize="none"
-          style={styles.input}
+        <Controller
+          control={control}
+          name="username"
+          rules={{ required: 'Username is required' }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              mode="outlined"
+              label="Username"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              style={styles.input}
+              error={!!errors.username}
+            />
+          )}
         />
-        <TextInput
-          mode="outlined"
-          label="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.input}
+        {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
+
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: 'Password is required' }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              mode="outlined"
+              label="Password"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              secureTextEntry
+              style={styles.input}
+              error={!!errors.password}
+            />
+          )}
         />
+        {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
         {loading ? (
           <ActivityIndicator size="large" color={theme.colors.primary} />
         ) : (
-          <Button mode="contained" onPress={login} style={styles.button}>
+          <Button mode="contained" onPress={handleSubmit(onSubmit)} style={styles.button}>
             Login
           </Button>
         )}
@@ -97,12 +120,11 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 4,
   },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-      textAlign: 'center',
-    
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   registerText: {
     marginTop: 16,
@@ -111,6 +133,10 @@ const styles = StyleSheet.create({
   link: {
     color: '#6200ee',
     fontWeight: 'bold',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
   },
 });
 
