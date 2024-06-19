@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image, Alert } from 'react-native';
 import { TextInput, Button, Text, ActivityIndicator, useTheme, Title } from 'react-native-paper';
 import { useAuth } from '../app/context/AuthContext';
+import LoginForm from '../app/context/LoginForm';
 
 const randomImageURI = 'https://picsum.photos/id/532/3820/2762';
 
