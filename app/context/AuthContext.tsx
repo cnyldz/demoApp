@@ -2,21 +2,8 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import Constants from 'expo-constants';
-
-const API_URL = Constants.expoConfig.extra.API_URL;
-const TOKEN_KEY = Constants.expoConfig.extra.TOKEN_KEY;
-
-interface AuthState {
-  token: string | null;
-  authenticated: boolean | null;
-}
-
-interface AuthProps {
-  authState: AuthState;
-  onRegister: (username: string, password: string) => Promise<any>;
-  onLogin: (username: string, password: string) => Promise<any>;
-  onLogout: () => Promise<void>;
-}
+import { AuthState, AuthProps } from '/Users/heavyshark/demoApp/types/auth';
+const { API_URL, TOKEN_KEY } = Constants.expoConfig.extra;
 
 const AuthContext = createContext<AuthProps | undefined>(undefined);
 

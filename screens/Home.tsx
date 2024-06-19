@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { TextInput, Button, Card, Title, Paragraph, ActivityIndicator, Text } from 'react-native-paper';
 import { useAuth } from '../app/context/AuthContext';
-import { fetchPosts, createPost, updatePost, deletePost, Post } from '../app/context/api';
+import { fetchPosts, createPost, updatePost, deletePost } from '../app/context/api';
+import { Post } from '/Users/heavyshark/demoApp/types/post';
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { onLogout } = useAuth();

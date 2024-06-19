@@ -1,15 +1,8 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { Post } from '/Users/heavyshark/demoApp/types/post';
 
-// Access the API_URL from the environment variables
 const { API_URL } = Constants.expoConfig.extra;
-
-export interface Post {
-  id: number;
-  title: string;
-  body: string;
-  userId: number;
-}
 
 export const fetchPosts = async (): Promise<Post[]> => {
   try {
